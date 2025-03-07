@@ -32,7 +32,7 @@ export default function DiagramContextProvider({ children }) {
           y: transform.pan.y,
           fields: [
             {
-              name: "id",
+              name: "ID",
               type: database === DB.GENERIC ? "INT" : "INTEGER",
               default: "",
               check: "",
