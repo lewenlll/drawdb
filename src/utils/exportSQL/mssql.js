@@ -1,6 +1,20 @@
 import { exportFieldComment, parseDefault } from "./shared";
 
 import { dbToTypes } from "../../data/datatypes";
+import { DB } from "../../data/constants";
+
+function parseType(field){
+  let res = field.type;
+
+  if(
+    dbToTypes[DB.MSSQL][field.type].isSized ||
+    dbToTypes[DB.MSSQL][field.type].hasPrecision
+  ){
+    res += `${field.size && field.size !== "" ? "(" + field.size + ")" : ""}`;
+  }
+
+  return res;
+}
 
 export function toMSSQL(diagram) {
   return `${diagram.tables
@@ -13,7 +27,7 @@ export function toMSSQL(diagram) {
             (field) =>
               `${exportFieldComment(field.comment)}\t[${
                 field.name
-              }] ${field.type}${
+              }] ${parseType(field)}${
                 field.notNull ? " NOT NULL" : ""
               }${field.increment ? " IDENTITY" : ""}${
                 field.unique ? " UNIQUE" : ""
