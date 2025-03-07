@@ -69,7 +69,7 @@ export default function DiagramContextProvider({ children }) {
             },
             {
               name: "UpdatedDate",
-              type: database === DB.GENERIC ? "INT" : "INTEGER",
+              type: database === DB.GENERIC ? "DATETIME" : "DATETIME",
               default: "",
               check: "",
               primary: false,
@@ -81,7 +81,7 @@ export default function DiagramContextProvider({ children }) {
             },
             {
               name: "UpdatedBy",
-              type: database === DB.GENERIC ? "DATETIME" : "DATETIME",
+              type: database === DB.GENERIC ? "NVARCHAR" : "NVARCHAR",
               default: "",
               check: "",
               primary: false,
