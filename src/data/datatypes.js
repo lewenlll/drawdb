@@ -1388,14 +1388,9 @@ const mssqlTypesBase = {
   },
   NVARCHAR_MAX: {
     type: "VARCHAR",
-    checkDefault: (field) => {
-      if (strHasQuotes(field.default)) {
-        return field.default.length - 2 <= field.size;
-      }
-      return field.default.length <= field.size;
-    },
+    checkDefault: (field) => true,
     hasCheck: true,
-    isSized: true,
+    isSized: false,
     hasPrecision: false,
     defaultSize: 'MAX',
     hasQuotes: true,
