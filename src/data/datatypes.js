@@ -1362,6 +1362,62 @@ export const sqliteTypes = new Proxy(sqliteTypesBase, {
 });
 
 const mssqlTypesBase = {
+  INTEGER: {
+    type: "INTEGER",
+    checkDefault: (field) => {
+      return intRegex.test(field.default);
+    },
+    hasCheck: true,
+    isSized: false,
+    hasPrecision: false,
+    canIncrement: true,
+  },
+  NVARCHAR: {
+    type: "VARCHAR",
+    checkDefault: (field) => {
+      if (strHasQuotes(field.default)) {
+        return field.default.length - 2 <= field.size;
+      }
+      return field.default.length <= field.size;
+    },
+    hasCheck: true,
+    isSized: true,
+    hasPrecision: false,
+    defaultSize: 255,
+    hasQuotes: true,
+  },
+  NVARCHAR_MAX: {
+    type: "VARCHAR",
+    checkDefault: (field) => {
+      if (strHasQuotes(field.default)) {
+        return field.default.length - 2 <= field.size;
+      }
+      return field.default.length <= field.size;
+    },
+    hasCheck: true,
+    isSized: true,
+    hasPrecision: false,
+    defaultSize: 'MAX',
+    hasQuotes: true,
+  },
+  DECIMAL: {
+    type: "DECIMAL",
+    checkDefault: (field) => {
+      return doubleRegex.test(field.default);
+    },
+    hasCheck: true,
+    isSized: false,
+    hasPrecision: true,
+  },
+  NUMERIC: {
+    type: "NUMERIC",
+    checkDefault: (field) => {
+      return doubleRegex.test(field.default);
+    },
+    hasCheck: true,
+    isSized: false,
+    hasPrecision: true,
+  },
   TINYINT: {
     type: "TINYINT",
     checkDefault: (field) => {
@@ -1374,16 +1430,6 @@ const mssqlTypesBase = {
   },
   SMALLINT: {
     type: "SMALLINT",
-    checkDefault: (field) => {
-      return intRegex.test(field.default);
-    },
-    hasCheck: true,
-    isSized: false,
-    hasPrecision: false,
-    canIncrement: true,
-  },
-  INTEGER: {
-    type: "INTEGER",
     checkDefault: (field) => {
       return intRegex.test(field.default);
     },
@@ -1406,24 +1452,6 @@ const mssqlTypesBase = {
     type: "BIT",
     checkDefault: (field) => {
       return field.default === "1" || field.default === "0";
-    },
-    hasCheck: true,
-    isSized: false,
-    hasPrecision: true,
-  },
-  DECIMAL: {
-    type: "DECIMAL",
-    checkDefault: (field) => {
-      return doubleRegex.test(field.default);
-    },
-    hasCheck: true,
-    isSized: false,
-    hasPrecision: true,
-  },
-  NUMERIC: {
-    type: "NUMERIC",
-    checkDefault: (field) => {
-      return doubleRegex.test(field.default);
     },
     hasCheck: true,
     isSized: false,
@@ -1637,20 +1665,6 @@ const mssqlTypesBase = {
     isSized: true,
     hasPrecision: false,
     defaultSize: 1,
-    hasQuotes: true,
-  },
-  NVARCHAR: {
-    type: "VARCHAR",
-    checkDefault: (field) => {
-      if (strHasQuotes(field.default)) {
-        return field.default.length - 2 <= field.size;
-      }
-      return field.default.length <= field.size;
-    },
-    hasCheck: true,
-    isSized: true,
-    hasPrecision: false,
-    defaultSize: 255,
     hasQuotes: true,
   },
   NTEXT: {
